@@ -1,0 +1,1 @@
+# luizalabs-favorite-products
