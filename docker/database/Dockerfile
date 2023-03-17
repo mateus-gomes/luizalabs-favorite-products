@@ -1,0 +1,3 @@
+FROM postgres
+ENV POSTGRES_PASSWORD luizalabs-interview
+ENV POSTGRES_DB favorite-products
