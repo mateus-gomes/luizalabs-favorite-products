@@ -5,10 +5,7 @@ import com.mateusgomes.luizalabs.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +23,9 @@ public class ClientController {
         List<Client> clientsList = clientService.findAll();
 
         if (clientsList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(204).build();
         } else {
-            return new ResponseEntity<>(clientsList, HttpStatus.OK);
+            return ResponseEntity.status(200).body(clientsList);
         }
     }
 
@@ -37,9 +34,9 @@ public class ClientController {
         Optional<Client> optionalClient = clientService.findById(idClient);
 
         if(optionalClient.isPresent()){
-            return new ResponseEntity<>(optionalClient, HttpStatus.OK);
+            return ResponseEntity.status(200).body(optionalClient);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(204).build();
         }
     }
 }
