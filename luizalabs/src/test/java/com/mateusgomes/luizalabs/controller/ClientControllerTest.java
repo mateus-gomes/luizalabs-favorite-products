@@ -16,9 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -106,5 +105,23 @@ public class ClientControllerTest {
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(client)))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("DELETE /clients/{idClient} - Should return 400 when client does not exists")
+    void deleteClientClientDoesNotExists() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("DELETE /clients/{idClient} - Should return 204 when client register is deleted")
+    void deleteClientClientSuccessfully() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        when(clientService.existsById(uuid)).thenReturn(true);
+
+        mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
     }
 }

@@ -30,4 +30,12 @@ public class ClientService {
     public void create(Client client) {
         clientRepository.save(client);
     }
+
+    public boolean existsById(UUID idClient) {
+        return clientRepository.existsById(idClient);
+    }
+
+    public void delete(UUID idClient) {
+        clientRepository.deleteById(idClient);
+    }
 }

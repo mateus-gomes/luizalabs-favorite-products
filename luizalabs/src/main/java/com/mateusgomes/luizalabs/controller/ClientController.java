@@ -57,4 +57,14 @@ public class ClientController {
             return ResponseEntity.status(201).body(client);
         }
     }
+
+    @DeleteMapping("/{idClient}")
+    public ResponseEntity<String> deleteClient(@PathVariable UUID idClient){
+        if(!clientService.existsById(idClient)){
+            return ResponseEntity.status(400).body("Client does not exists.");
+        }
+
+        clientService.delete(idClient);
+        return ResponseEntity.status(204).build();
+    }
 }
