@@ -67,4 +67,22 @@ public class ClientController {
         clientService.delete(idClient);
         return ResponseEntity.status(204).build();
     }
+
+    @PutMapping
+    public ResponseEntity updateClient(@Valid @RequestBody Client client, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(422).body(errorHandler.buildErrorMessage(bindingResult));
+        }
+
+        if(!clientService.existsById(client.getIdClient())){
+            return ResponseEntity.status(400).body("Client does not exists.");
+        }
+
+        if(!clientService.isEmailAvailableForUse(client)){
+            return ResponseEntity.status(400).body("Email is already in use.");
+        }
+
+        clientService.update(client);
+        return ResponseEntity.status(204).build();
+    }
 }

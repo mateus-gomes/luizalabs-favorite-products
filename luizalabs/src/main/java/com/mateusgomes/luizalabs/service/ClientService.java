@@ -38,4 +38,22 @@ public class ClientService {
     public void delete(UUID idClient) {
         clientRepository.deleteById(idClient);
     }
+
+    public void update(Client client) {
+        clientRepository.save(client);
+    }
+
+    public boolean isEmailAvailableForUse(Client client) {
+        Optional<Client> clientFound = findByEmail(client.getClientEmail());
+
+        if(clientFound.isPresent()){
+            return client.getIdClient().equals(clientFound.get().getIdClient());
+        }
+
+        return true;
+    }
+
+    private Optional<Client> findByEmail(String clientEmail){
+        return clientRepository.findByClientEmail(clientEmail);
+    }
 }

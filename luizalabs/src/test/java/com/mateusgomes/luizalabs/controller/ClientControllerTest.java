@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -123,5 +124,69 @@ public class ClientControllerTest {
         when(clientService.existsById(uuid)).thenReturn(true);
 
         mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("PUT /clients - Should return 204 when client is successfully updated")
+    void updateClientSuccessfully() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Client client = new Client();
+        client.setIdClient(uuid);
+        client.setClientName("Mateus");
+        client.setClientEmail("mateus@gmail.com");
+
+        when(clientService.existsById(uuid)).thenReturn(true);
+
+        when(clientService.isEmailAvailableForUse(any())).thenReturn(true);
+
+        mockMvc.perform(put("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("PUT /clients - Should return 400 when client does not exists")
+    void updateClientClientDoesNotExists() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Client client = new Client();
+        client.setIdClient(uuid);
+        client.setClientName("Mateus");
+        client.setClientEmail("mateus@gmail.com");
+
+        mockMvc.perform(put("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("PUT /clients - Should return 400 when trying to update to an existing email")
+    void updateClientUpdateToExistingEmail() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Client client = new Client();
+        client.setIdClient(uuid);
+        client.setClientName("Mateus");
+        client.setClientEmail("mateus@gmail.com");
+
+        when(clientService.existsById(uuid)).thenReturn(true);
+
+        mockMvc.perform(put("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("PUT /clients - Should return 422 when client validation fail")
+    void updateClientUnprocessableEntity() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Client client = new Client();
+        client.setIdClient(uuid);
+
+        mockMvc.perform(put("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isUnprocessableEntity());
     }
 }
