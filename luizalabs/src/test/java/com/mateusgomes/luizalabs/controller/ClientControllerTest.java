@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,4 +43,25 @@ public class ClientControllerTest {
     void findAllClientsWithNoContent() throws Exception {
         mockMvc.perform(get("/clients")).andExpect(status().isNoContent());
     }
+
+    @Test
+    @DisplayName("GET /clients/{idClient} - Should return 200 when is successful and there is a client registered")
+    void findByIdClient() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Client client = new Client();
+
+        when(clientService.findById(uuid)).thenReturn(Optional.of(client));
+
+        mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("GET /clients/{idClient} - Should return 204 when is successful but there is no client registered")
+    void findByIdClientNoContent() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
+    }
+
+
 }
