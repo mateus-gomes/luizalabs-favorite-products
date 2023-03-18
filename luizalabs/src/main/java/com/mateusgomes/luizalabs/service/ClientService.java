@@ -22,4 +22,12 @@ public class ClientService {
     public Optional<Client> findById(UUID clientId) {
         return clientRepository.findById(clientId);
     }
+
+    public boolean existsByEmail(String clientEmail) {
+        return clientRepository.existsByClientEmail(clientEmail);
+    }
+
+    public void create(Client client) {
+        clientRepository.save(client);
+    }
 }

@@ -1,5 +1,6 @@
 package com.mateusgomes.luizalabs.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mateusgomes.luizalabs.model.Client;
 import com.mateusgomes.luizalabs.service.ClientService;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -28,6 +30,9 @@ public class ClientControllerTest {
     @MockBean
     private ClientService clientService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
     @DisplayName("GET /clients - Should return 200 when is successful and there are clients registered")
     void findAllClientsWithContent() throws Exception {
@@ -40,7 +45,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("GET /clients - Should return 204 when is successful but there are no clients registered")
-    void findAllClientsWithNoContent() throws Exception {
+    void findAllClientsNoContent() throws Exception {
         mockMvc.perform(get("/clients")).andExpect(status().isNoContent());
     }
 
@@ -63,5 +68,43 @@ public class ClientControllerTest {
         mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
     }
 
+    @Test
+    @DisplayName("POST /clients - Should return 201 when client is successfully created")
+    void createClientSuccessfully() throws Exception {
+        Client client = new Client();
+        client.setClientName("Mateus");
+        client.setClientEmail("mateus@gmail.com");
 
+        mockMvc.perform(post("/clients")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("POST /clients - Should return 400 when email is already in use")
+    void createClientEmailAlreadyInUse() throws Exception {
+        Client client = new Client();
+        client.setClientName("Mateus");
+        client.setClientEmail("mateus@gmail.com");
+
+        when(clientService.existsByEmail(client.getClientEmail())).thenReturn(true);
+
+        mockMvc.perform(post("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /clients - Should return 422 when validation fail")
+    void createClientUnprocessableEntity() throws Exception {
+        Client client = new Client();
+        client.setClientName("Mateus");
+
+        mockMvc.perform(post("/clients")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(client)))
+                .andExpect(status().isUnprocessableEntity());
+    }
 }
