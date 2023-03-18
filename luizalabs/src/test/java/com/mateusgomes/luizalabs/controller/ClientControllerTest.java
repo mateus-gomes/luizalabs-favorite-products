@@ -35,7 +35,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("GET /clients - Should return 200 when is successful and there are clients registered")
-    void findAllClientsWithContent() throws Exception {
+    void findAllClientsOk() throws Exception {
         Client client = new Client();
 
         when(clientService.findAll()).thenReturn(List.of(client));
@@ -51,7 +51,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("GET /clients/{idClient} - Should return 200 when is successful and there is a client registered")
-    void findByIdClient() throws Exception {
+    void findClientByIdOk() throws Exception {
         UUID uuid = UUID.randomUUID();
         Client client = new Client();
 
@@ -62,7 +62,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("GET /clients/{idClient} - Should return 204 when is successful but there is no client registered")
-    void findByIdClientNoContent() throws Exception {
+    void findClientByIdNoContent() throws Exception {
         UUID uuid = UUID.randomUUID();
 
         mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
@@ -70,7 +70,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("POST /clients - Should return 201 when client is successfully created")
-    void createClientSuccessfully() throws Exception {
+    void createClientCreated() throws Exception {
         Client client = new Client();
         client.setClientName("Mateus");
         client.setClientEmail("mateus@gmail.com");
@@ -83,7 +83,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("POST /clients - Should return 400 when email is already in use")
-    void createClientEmailAlreadyInUse() throws Exception {
+    void createClientBadRequest() throws Exception {
         Client client = new Client();
         client.setClientName("Mateus");
         client.setClientEmail("mateus@gmail.com");
@@ -109,16 +109,8 @@ public class ClientControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /clients/{idClient} - Should return 400 when client does not exists")
-    void deleteClientClientDoesNotExists() throws Exception {
-        UUID uuid = UUID.randomUUID();
-
-        mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isBadRequest());
-    }
-
-    @Test
     @DisplayName("DELETE /clients/{idClient} - Should return 204 when client register is deleted")
-    void deleteClientClientSuccessfully() throws Exception {
+    void deleteClientNoContent() throws Exception {
         UUID uuid = UUID.randomUUID();
 
         when(clientService.existsById(uuid)).thenReturn(true);
@@ -127,8 +119,16 @@ public class ClientControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE /clients/{idClient} - Should return 400 when client does not exists")
+    void deleteClientBadRequest() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("PUT /clients - Should return 204 when client is successfully updated")
-    void updateClientSuccessfully() throws Exception {
+    void updateClientNoContent() throws Exception {
         UUID uuid = UUID.randomUUID();
         Client client = new Client();
         client.setIdClient(uuid);
@@ -147,7 +147,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /clients - Should return 400 when client does not exists")
-    void updateClientClientDoesNotExists() throws Exception {
+    void updateClientBadRequestClientDoesNotExists() throws Exception {
         UUID uuid = UUID.randomUUID();
         Client client = new Client();
         client.setIdClient(uuid);
@@ -162,7 +162,7 @@ public class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /clients - Should return 400 when trying to update to an existing email")
-    void updateClientUpdateToExistingEmail() throws Exception {
+    void updateClientBadRequestEmailAlreadyInUse() throws Exception {
         UUID uuid = UUID.randomUUID();
         Client client = new Client();
         client.setIdClient(uuid);
