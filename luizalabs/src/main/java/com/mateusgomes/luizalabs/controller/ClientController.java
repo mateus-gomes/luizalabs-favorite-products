@@ -28,9 +28,9 @@ public class ClientController {
 
         if (clientsList.isEmpty()){
             return ResponseEntity.status(204).build();
-        } else {
-            return ResponseEntity.status(200).body(clientsList);
         }
+
+        return ResponseEntity.status(200).body(clientsList);
     }
 
     @GetMapping("/{idClient}")
@@ -39,9 +39,9 @@ public class ClientController {
 
         if(optionalClient.isPresent()){
             return ResponseEntity.status(200).body(optionalClient);
-        } else {
-            return ResponseEntity.status(204).build();
         }
+
+        return ResponseEntity.status(204).build();
     }
 
     @PostMapping
@@ -52,10 +52,10 @@ public class ClientController {
 
         if(clientService.existsByEmail(client.getClientEmail())){
             return ResponseEntity.status(400).body("Email is already in use.");
-        } else {
-            clientService.create(client);
-            return ResponseEntity.status(201).body(client);
         }
+
+        clientService.create(client);
+        return ResponseEntity.status(201).body(client);
     }
 
     @DeleteMapping("/{idClient}")
