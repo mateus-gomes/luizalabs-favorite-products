@@ -2,9 +2,11 @@ package com.mateusgomes.luizalabs.controller;
 
 import com.mateusgomes.luizalabs.handler.ErrorHandler;
 import com.mateusgomes.luizalabs.model.Client;
+import com.mateusgomes.luizalabs.model.PageableClientList;
 import com.mateusgomes.luizalabs.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +25,16 @@ public class ClientController {
     private ErrorHandler errorHandler = new ErrorHandler();
 
     @GetMapping
-    public ResponseEntity<List<Client>> findAllClients(){
-        List<Client> clientsList = clientService.findAll();
+    public ResponseEntity<PageableClientList> findAllClients(
+            @RequestParam(value="page", required=false) int page
+    ){
+        PageableClientList pageableClientList = clientService.findAll(page);
 
-        if (clientsList.isEmpty()){
+        if (pageableClientList.getClients().isEmpty()){
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(clientsList);
+        return ResponseEntity.status(200).body(pageableClientList);
     }
 
     @GetMapping("/{idClient}")

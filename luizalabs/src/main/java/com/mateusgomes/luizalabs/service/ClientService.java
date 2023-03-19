@@ -1,8 +1,13 @@
 package com.mateusgomes.luizalabs.service;
 
 import com.mateusgomes.luizalabs.model.Client;
+import com.mateusgomes.luizalabs.model.Meta;
+import com.mateusgomes.luizalabs.model.PageableClientList;
 import com.mateusgomes.luizalabs.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +20,15 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public List<Client> findAll() {
-        return clientRepository.findAll();
+    public PageableClientList findAll(int page) {
+        final int PAGE_SIZE = 10;
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Client> pageClient = clientRepository.findAll(pageable);
+
+        return new PageableClientList(
+                new Meta(page, PAGE_SIZE),
+                pageClient.getContent()
+        );
     }
 
     public Optional<Client> findById(UUID clientId) {
