@@ -1,7 +1,6 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mateusgomes.luizalabs.api.LuizalabsGateway;
 import com.mateusgomes.luizalabs.model.Product;
 import com.mateusgomes.luizalabs.model.ProductAPIResponse;
 import com.mateusgomes.luizalabs.model.ProductRequest;
@@ -38,9 +37,6 @@ public class WishlistControllerTest {
 
     @MockBean
     private ClientService clientService;
-
-    @MockBean
-    private LuizalabsGateway luizalabsGateway;
 
     @Autowired
     private ObjectMapper objectMapper;
