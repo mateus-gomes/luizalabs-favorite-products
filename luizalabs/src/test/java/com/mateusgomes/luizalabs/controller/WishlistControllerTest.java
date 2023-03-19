@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.UUID;
@@ -111,12 +112,11 @@ public class WishlistControllerTest {
     void addProductToWishlistBadRequestProductDoesNotExists() throws Exception {
         UUID uuid = UUID.randomUUID();
         ProductRequest productRequest = new ProductRequest();
-        ResponseEntity<ProductAPIResponse>  response = new ResponseEntity<>(HttpStatusCode.valueOf(400));
         productRequest.setIdProduct(uuid);
 
         when(clientService.existsById(uuid)).thenReturn(true);
 
-        when(wishlistService.findProductOnExternalAPI(uuid)).thenReturn(response);
+        when(wishlistService.findProductOnExternalAPI(uuid)).thenThrow(HttpClientErrorException.class);
 
         mockMvc.perform(post("/clients/{idClient}/wishlists", uuid)
                 .contentType("application/json")

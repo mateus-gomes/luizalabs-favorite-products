@@ -8,6 +8,7 @@ import com.mateusgomes.luizalabs.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,16 +50,13 @@ public class WishlistController {
             return ResponseEntity.status(400).body("Product is already on the wishlist.");
         }
 
-        ResponseEntity<ProductAPIResponse> responseProductAPI = wishlistService.findProductOnExternalAPI(idProduct);
+        try{
+            ResponseEntity<ProductAPIResponse> responseProductAPI = wishlistService.findProductOnExternalAPI(idProduct);
+            Product product = wishlistService.addProductToWishlist(responseProductAPI.getBody(), idClient);
 
-        boolean isValidProduct = responseProductAPI.getStatusCode().is2xxSuccessful();
-
-        if(!isValidProduct){
+            return ResponseEntity.status(201).body(product);
+        } catch (HttpClientErrorException e){
             return ResponseEntity.status(400).body(String.format("Product with idProduct %s does not exists", idProduct));
         }
-
-        Product product = wishlistService.addProductToWishlist(responseProductAPI.getBody(), idClient);
-
-        return ResponseEntity.status(201).body(product);
     }
 }
