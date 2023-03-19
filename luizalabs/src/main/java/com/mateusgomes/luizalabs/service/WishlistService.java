@@ -1,11 +1,12 @@
 package com.mateusgomes.luizalabs.service;
 
 import com.mateusgomes.luizalabs.api.LuizalabsGateway;
-import com.mateusgomes.luizalabs.model.Client;
-import com.mateusgomes.luizalabs.model.Product;
-import com.mateusgomes.luizalabs.model.ProductAPIResponse;
+import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,15 @@ public class WishlistService {
     @Autowired
     private LuizalabsGateway luizalabsGateway;
 
-    public List<Product> findByClientId(UUID idClient) {
-        return productRepository.findByClient(idClient);
+    public PageableProductList findByClientId(UUID idClient, int page) {
+        final int PAGE_SIZE = 5;
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Product> pageProduct = productRepository.findByClientIdClient(idClient, pageable);
+
+        return new PageableProductList(
+                new Meta(page, PAGE_SIZE),
+                pageProduct.getContent()
+        );
     }
 
     public boolean existsByIdProductAndIdClient(UUID idProduct, UUID idClient) {

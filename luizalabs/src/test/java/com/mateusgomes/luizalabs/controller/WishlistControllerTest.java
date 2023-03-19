@@ -1,9 +1,7 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mateusgomes.luizalabs.model.Product;
-import com.mateusgomes.luizalabs.model.ProductAPIResponse;
-import com.mateusgomes.luizalabs.model.ProductRequest;
+import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,17 +42,31 @@ public class WishlistControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("GET /clients - Should return 400 when no page is send in the request")
+    void findAllClientsBadRequest() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        mockMvc.perform(get("/clients/{idClient}/wishlists", uuid))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("No page was provided"));
+    }
+
+    @Test
     @DisplayName("GET /clients/{idClient}/wishlists - " +
             "Should return 200 when the client exists but there are no products on the wishlist"
     )
     void findWishlistByClientOk() throws Exception {
+        int pageNumber = 0;
         UUID uuid = UUID.randomUUID();
 
         when(clientService.existsById(uuid)).thenReturn(true);
 
-        when(wishlistService.findByClientId(uuid)).thenReturn(List.of(new Product()));
+        when(wishlistService.findByClientId(uuid, pageNumber)).thenReturn(
+                new PageableProductList(new Meta(pageNumber, 10), List.of(new Product()))
+        );
 
-        mockMvc.perform(get("/clients/{idClient}/wishlists", uuid)).andExpect(status().isOk());
+        mockMvc.perform(get(String.format(
+                "/clients/{idClient}/wishlists?page=%d", pageNumber), uuid)).andExpect(status().isOk());
     }
 
     @Test
@@ -61,11 +74,16 @@ public class WishlistControllerTest {
             "Should return 204 when the client exists but there are no products on the wishlist"
     )
     void findWishlistByClientNoContent() throws Exception {
+        int pageNumber = 0;
         UUID uuid = UUID.randomUUID();
 
         when(clientService.existsById(uuid)).thenReturn(true);
 
-        mockMvc.perform(get("/clients/{idClient}/wishlists", uuid)).andExpect(status().isNoContent());
+        when(wishlistService.findByClientId(uuid, pageNumber)).thenReturn(
+                new PageableProductList(new Meta(pageNumber, 10), new ArrayList<>())
+        );
+
+        mockMvc.perform(get("/clients/{idClient}/wishlists?page=0", uuid)).andExpect(status().isNoContent());
     }
 
     @Test
