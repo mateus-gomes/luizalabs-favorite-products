@@ -24,6 +24,10 @@ public class Client {
     public Client() {
     }
 
+    public Client(UUID idClient) {
+        this.idClient = idClient;
+    }
+
     public UUID getIdClient() {
         return idClient;
     }

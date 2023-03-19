@@ -1,14 +1,13 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.mateusgomes.luizalabs.model.Product;
+import com.mateusgomes.luizalabs.model.ProductAPIResponse;
+import com.mateusgomes.luizalabs.model.ProductRequest;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +32,33 @@ public class WishlistController {
 
         if(wishlist.isEmpty()){
             return ResponseEntity.status(204).build();
-        } else {
-            return ResponseEntity.status(200).body(wishlist);
         }
+
+        return ResponseEntity.status(200).body(wishlist);
+    }
+
+    @PostMapping("/{idClient}/wishlists")
+    public ResponseEntity addProductToWishlist(@PathVariable UUID idClient, @RequestBody ProductRequest productRequest){
+        UUID idProduct = productRequest.getIdProduct();
+
+        if(!clientService.existsById(idClient)){
+            return ResponseEntity.status(400).body("Client does not exists.");
+        }
+
+        if(wishlistService.existsByIdProductAndIdClient(idProduct, idClient)){
+            return ResponseEntity.status(400).body("Product is already on the wishlist.");
+        }
+
+        ResponseEntity<ProductAPIResponse> responseProductAPI = wishlistService.findProductOnExternalAPI(idProduct);
+
+        boolean isValidProduct = responseProductAPI.getStatusCode().is2xxSuccessful();
+
+        if(!isValidProduct){
+            return ResponseEntity.status(400).body(String.format("Product with idProduct %s does not exists", idProduct));
+        }
+
+        Product product = wishlistService.addProductToWishlist(responseProductAPI.getBody(), idClient);
+
+        return ResponseEntity.status(201).body(product);
     }
 }

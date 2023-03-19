@@ -1,6 +1,7 @@
 package com.mateusgomes.luizalabs.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "products")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
 
     @Id
@@ -28,8 +30,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @PositiveOrZero(message = "Product review score should be a positive number or zero.")
-    @Column(name = "reviewScore", nullable = false)
+    @Column(name = "reviewScore", nullable = true)
     private Double reviewScore;
 
     @JsonBackReference
@@ -38,6 +39,15 @@ public class Product {
     private Client client;
 
     public Product() {
+    }
+
+    public Product(UUID idProduct, String title, String image, Double price, Double reviewScore, Client client) {
+        this.idProduct = idProduct;
+        this.title = title;
+        this.image = image;
+        this.price = price;
+        this.reviewScore = reviewScore;
+        this.client = client;
     }
 
     public UUID getIdProduct() {
