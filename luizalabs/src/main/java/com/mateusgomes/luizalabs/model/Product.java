@@ -14,7 +14,6 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idProduct;
 
     @NotNull(message = "Product title is a required field and should not be empty")
