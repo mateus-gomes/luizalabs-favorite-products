@@ -4,7 +4,7 @@ import org.springframework.validation.BindingResult;
 
 public class ErrorHandler {
 
-    public String buildErrorMessage(BindingResult bindingResult){
+    public String buildValidationErrorMessage(BindingResult bindingResult){
         int listErrorSize = bindingResult.getAllErrors().size();
         StringBuilder errorMessage = new StringBuilder("The following errors were found: \n");
 

@@ -59,7 +59,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    @DisplayName("GET /clients - Should return 204 when is successful but there are no clients registered")
+    @DisplayName("GET /clients - Should return 404 when is successful but there are no clients registered")
     void findAllClientsNoContent() throws Exception {
         int pageNumber = 0;
 
@@ -67,7 +67,7 @@ public class ClientControllerTest {
                 new PageableClientList(new Meta(pageNumber, 10), new ArrayList<>())
         );
 
-        mockMvc.perform(get("/clients?page=0")).andExpect(status().isNoContent());
+        mockMvc.perform(get("/clients?page=0")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -82,11 +82,11 @@ public class ClientControllerTest {
     }
 
     @Test
-    @DisplayName("GET /clients/{idClient} - Should return 204 when is successful but there is no client registered")
+    @DisplayName("GET /clients/{idClient} - Should return 404 when is successful but there is no client registered")
     void findClientByIdNoContent() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
+        mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNotFound());
     }
 
     @Test

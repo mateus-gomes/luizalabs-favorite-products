@@ -1,11 +1,14 @@
 package com.mateusgomes.luizalabs.controller;
 
-import com.mateusgomes.luizalabs.model.PageableProductList;
-import com.mateusgomes.luizalabs.model.Product;
-import com.mateusgomes.luizalabs.model.ProductAPIResponse;
-import com.mateusgomes.luizalabs.model.ProductRequest;
+import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -17,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/clients")
+@Tag(name = "Wishlist", description = "Endpoints for managing client's wishlist")
 public class WishlistController {
 
     @Autowired
@@ -33,6 +37,24 @@ public class WishlistController {
     }
 
     @GetMapping("/{idClient}/wishlists")
+    @Operation(summary = "Find wishlist from client", description = "Find wishlist from client separated by pages")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Wishlist was found",
+                    content = { @Content(
+                            schema = @Schema(implementation = PageableProductList.class),
+                            mediaType = "application/json"
+                    )}
+            ),
+            @ApiResponse(responseCode = "400", description = "No page was provided",
+                    content = { @Content (schema = @Schema(defaultValue = "No page was provided"))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Client does not exists",
+                    content = { @Content (schema = @Schema(defaultValue = "Client does not exists."))}
+            ),
+            @ApiResponse(responseCode = "404", description = "No clients were found",
+                    content = { @Content }
+            ),
+    })
     public ResponseEntity findWishlistByClient(
             @PathVariable UUID idClient,
             @RequestParam(value="page", required=true) int page
@@ -44,12 +66,35 @@ public class WishlistController {
         PageableProductList pageableProductList = wishlistService.findByClientId(idClient, page);
 
         if(pageableProductList.getProducts().isEmpty()){
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.status(404).build();
         }
 
         return ResponseEntity.status(200).body(pageableProductList);
     }
 
+    @Operation(
+            summary = "Add a item to client's wishlist",
+            description = "Create a new record of a product related to the client in the database"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Item was successfully added",
+                    content = { @Content(
+                            schema = @Schema(implementation = Product.class),
+                            mediaType = "application/json"
+                    )}
+            ),
+            @ApiResponse(responseCode = "400", description = "Client does not exists",
+                    content = { @Content (schema = @Schema(defaultValue = "Client does not exists."))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Product is already on the wishlist",
+                    content = { @Content (schema = @Schema(defaultValue = "Product is already on the wishlist."))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Product does not exists",
+                    content = { @Content (schema = @Schema(
+                            defaultValue = "Product with idProduct {idProduct} does not exists."
+                    ))}
+            )
+    })
     @PostMapping("/{idClient}/wishlists")
     public ResponseEntity addProductToWishlist(@PathVariable UUID idClient, @RequestBody ProductRequest productRequest){
         UUID idProduct = productRequest.getIdProduct();

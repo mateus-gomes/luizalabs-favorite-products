@@ -71,7 +71,7 @@ public class WishlistControllerTest {
 
     @Test
     @DisplayName("GET /clients/{idClient}/wishlists - " +
-            "Should return 204 when the client exists but there are no products on the wishlist"
+            "Should return 404 when the client exists but there are no products on the wishlist"
     )
     void findWishlistByClientNoContent() throws Exception {
         int pageNumber = 0;
@@ -83,7 +83,7 @@ public class WishlistControllerTest {
                 new PageableProductList(new Meta(pageNumber, 10), new ArrayList<>())
         );
 
-        mockMvc.perform(get("/clients/{idClient}/wishlists?page=0", uuid)).andExpect(status().isNoContent());
+        mockMvc.perform(get("/clients/{idClient}/wishlists?page=0", uuid)).andExpect(status().isNotFound());
     }
 
     @Test
