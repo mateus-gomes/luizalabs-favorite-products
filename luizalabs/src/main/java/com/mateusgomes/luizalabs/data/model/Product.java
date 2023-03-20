@@ -1,4 +1,4 @@
-package com.mateusgomes.luizalabs.model;
+package com.mateusgomes.luizalabs.data.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;

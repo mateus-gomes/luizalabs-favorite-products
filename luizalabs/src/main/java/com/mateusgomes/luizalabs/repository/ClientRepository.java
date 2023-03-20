@@ -1,6 +1,6 @@
 package com.mateusgomes.luizalabs.repository;
 
-import com.mateusgomes.luizalabs.model.Client;
+import com.mateusgomes.luizalabs.data.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

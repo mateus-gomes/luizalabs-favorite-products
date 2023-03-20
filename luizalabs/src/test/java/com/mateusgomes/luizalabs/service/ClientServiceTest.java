@@ -1,6 +1,6 @@
 package com.mateusgomes.luizalabs.service;
 
-import com.mateusgomes.luizalabs.model.Client;
+import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.repository.ClientRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

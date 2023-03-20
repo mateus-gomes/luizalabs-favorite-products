@@ -1,8 +1,8 @@
 package com.mateusgomes.luizalabs.service;
 
-import com.mateusgomes.luizalabs.model.Client;
-import com.mateusgomes.luizalabs.model.Meta;
-import com.mateusgomes.luizalabs.model.PageableClientList;
+import com.mateusgomes.luizalabs.data.model.Client;
+import com.mateusgomes.luizalabs.data.domain.Meta;
+import com.mateusgomes.luizalabs.data.domain.PageableClientList;
 import com.mateusgomes.luizalabs.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

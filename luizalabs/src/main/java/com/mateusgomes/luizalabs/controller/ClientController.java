@@ -1,8 +1,8 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.mateusgomes.luizalabs.handler.ErrorHandler;
-import com.mateusgomes.luizalabs.model.Client;
-import com.mateusgomes.luizalabs.model.PageableClientList;
+import com.mateusgomes.luizalabs.data.model.Client;
+import com.mateusgomes.luizalabs.data.domain.PageableClientList;
 import com.mateusgomes.luizalabs.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

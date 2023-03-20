@@ -1,4 +1,4 @@
-package com.mateusgomes.luizalabs.model;
+package com.mateusgomes.luizalabs.data.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
 package com.mateusgomes.luizalabs.api;
 
-import com.mateusgomes.luizalabs.model.ProductAPIResponse;
+import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

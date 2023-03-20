@@ -1,6 +1,11 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mateusgomes.luizalabs.data.domain.Meta;
+import com.mateusgomes.luizalabs.data.domain.PageableProductList;
+import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
+import com.mateusgomes.luizalabs.data.domain.ProductRequest;
+import com.mateusgomes.luizalabs.data.model.*;
 import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;

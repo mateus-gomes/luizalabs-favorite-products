@@ -1,4 +1,7 @@
-package com.mateusgomes.luizalabs.model;
+package com.mateusgomes.luizalabs.data.domain;
+
+import com.mateusgomes.luizalabs.data.domain.Meta;
+import com.mateusgomes.luizalabs.data.model.Client;
 
 import java.util.List;
 

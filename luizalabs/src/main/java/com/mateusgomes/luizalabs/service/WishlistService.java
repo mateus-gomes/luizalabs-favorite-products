@@ -1,7 +1,10 @@
 package com.mateusgomes.luizalabs.service;
 
 import com.mateusgomes.luizalabs.api.LuizalabsGateway;
-import com.mateusgomes.luizalabs.model.*;
+import com.mateusgomes.luizalabs.data.domain.Meta;
+import com.mateusgomes.luizalabs.data.domain.PageableProductList;
+import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
+import com.mateusgomes.luizalabs.data.model.*;
 import com.mateusgomes.luizalabs.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service

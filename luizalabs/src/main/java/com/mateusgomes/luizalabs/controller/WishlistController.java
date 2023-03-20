@@ -1,5 +1,9 @@
 package com.mateusgomes.luizalabs.controller;
 
+import com.mateusgomes.luizalabs.data.domain.PageableProductList;
+import com.mateusgomes.luizalabs.data.model.Product;
+import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
+import com.mateusgomes.luizalabs.data.domain.ProductRequest;
 import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController

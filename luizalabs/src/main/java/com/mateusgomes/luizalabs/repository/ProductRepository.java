@@ -1,6 +1,6 @@
 package com.mateusgomes.luizalabs.repository;
 
-import com.mateusgomes.luizalabs.model.Product;
+import com.mateusgomes.luizalabs.data.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

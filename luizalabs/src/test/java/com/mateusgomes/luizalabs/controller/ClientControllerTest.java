@@ -1,9 +1,9 @@
 package com.mateusgomes.luizalabs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mateusgomes.luizalabs.model.Client;
-import com.mateusgomes.luizalabs.model.Meta;
-import com.mateusgomes.luizalabs.model.PageableClientList;
+import com.mateusgomes.luizalabs.data.model.Client;
+import com.mateusgomes.luizalabs.data.domain.Meta;
+import com.mateusgomes.luizalabs.data.domain.PageableClientList;
 import com.mateusgomes.luizalabs.service.ClientService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
