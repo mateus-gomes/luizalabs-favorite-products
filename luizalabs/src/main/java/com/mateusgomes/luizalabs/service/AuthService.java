@@ -35,7 +35,7 @@ public class AuthService {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            Optional<User> user = userRepository.findByUserName(username);
+            Optional<User> user = userRepository.findByUsername(username);
 
             if(user.isPresent()){
                 Token tokenResponse = tokenProvider.createAccessToken(username, user.get().getRoles());

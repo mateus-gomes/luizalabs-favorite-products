@@ -5,6 +5,7 @@ import com.mateusgomes.luizalabs.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,8 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers("/auth/**", "/swagger-ui/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/clients").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/clients").authenticated()
                                 .requestMatchers("/clients/**").authenticated()
-                                .requestMatchers("/clients").authenticated()
                 )
                 .cors()
                 .and()

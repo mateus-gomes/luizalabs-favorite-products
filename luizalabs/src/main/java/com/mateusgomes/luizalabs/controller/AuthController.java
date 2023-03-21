@@ -24,7 +24,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AccountCredentials accountCredentials){
         if(accountCredentials.getUserName() == null || accountCredentials.getPassword() == null){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request.");
         }
 
         return authService.signin(accountCredentials);

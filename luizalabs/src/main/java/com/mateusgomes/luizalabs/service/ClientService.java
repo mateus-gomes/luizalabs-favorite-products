@@ -5,6 +5,7 @@ import com.mateusgomes.luizalabs.data.domain.UserData;
 import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.data.domain.Meta;
 import com.mateusgomes.luizalabs.data.domain.PageableClientList;
+import com.mateusgomes.luizalabs.data.model.Permission;
 import com.mateusgomes.luizalabs.data.model.User;
 import com.mateusgomes.luizalabs.repository.ClientRepository;
 import com.mateusgomes.luizalabs.repository.UserRepository;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,7 +64,8 @@ public class ClientService {
         User user = new User(
                 userData.getClientEmail(),
                 userData.getClientName(),
-                securityConfig.passwordEncoder().encode(userData.getPassword())
+                securityConfig.passwordEncoder().encode(userData.getPassword()),
+                Arrays.asList(new Permission(2L))
         );
 
         return userRepository.save(user);

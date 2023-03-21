@@ -17,8 +17,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idUser;
 
-    @Column(name = "user_name", unique = true)
-    private String userName;
+    @Column(name = "username", unique = true)
+    private String username;
 
     @Column(name = "full_name")
     private String fullName;
@@ -27,16 +27,16 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "account_non_locked")
-    public Boolean accountNonLocked;
+    private Boolean accountNonLocked;
 
     @Column(name = "account_non_expired")
-    public Boolean accountNonExpired;
+    private Boolean accountNonExpired;
 
     @Column(name = "credentials_non_expired")
-    public Boolean credentialsNonExpired;
+    private Boolean credentialsNonExpired;
 
     @Column(name = "enabled")
-    public Boolean enabled;
+    private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -44,27 +44,28 @@ public class User implements UserDetails {
             joinColumns = { @JoinColumn(name = "id_user")},
             inverseJoinColumns = @JoinColumn(name = "id_permission")
     )
-    public List<Permission> permissions;
-
-    public List<String> roles;
+    private List<Permission> permissions;
 
     public List<String> getRoles() {
         List<String> rolesList = new ArrayList<>();
-        for(int i = 0; i < permissions.size()-1; i++){
-            roles.add(permissions.get(i).getDescription());
+        for (Permission permission : permissions) {
+            rolesList.add(permission.getDescription());
         }
         return rolesList;
     }
 
-    public User(String userName, String fullName, String password) {
-        this.userName = userName;
+    public User(String username, String fullName, String password, List<Permission> permissions) {
+        this.username = username;
         this.fullName = fullName;
         this.password = password;
+        this.permissions = permissions;
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = true;
     }
+
+
 
     public User() {
     }
@@ -85,7 +86,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

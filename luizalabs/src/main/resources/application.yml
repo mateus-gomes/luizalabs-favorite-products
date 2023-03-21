@@ -9,7 +9,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/favorite-products
     username: postgres
     password: luizalabs-interview
+  flyway:
+    baseline-on-migrate: true
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false

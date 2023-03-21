@@ -22,4 +22,8 @@ public class Permission implements GrantedAuthority {
     public String getDescription() {
         return description;
     }
+
+    public Permission(Long idPermission) {
+        this.idPermission = idPermission;
+    }
 }
