@@ -1,5 +1,6 @@
 package com.mateusgomes.luizalabs.controller;
 
+import com.mateusgomes.luizalabs.data.domain.UserData;
 import com.mateusgomes.luizalabs.handler.ErrorHandler;
 import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.data.domain.PageableClientList;
@@ -108,17 +109,17 @@ public class ClientController {
                     ))}
             )
     })
-    public ResponseEntity createClient(@Valid @RequestBody Client client, BindingResult bindingResult){
+    public ResponseEntity createClient(@RequestBody UserData userData, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(422).body(errorHandler.buildValidationErrorMessage(bindingResult));
         }
 
-        if(clientService.existsByEmail(client.getClientEmail())){
+        if(clientService.existsByEmail(userData.getClientEmail())){
             return ResponseEntity.status(400).body("Email is already in use.");
         }
 
-        clientService.create(client);
-        return ResponseEntity.status(201).body(client);
+        clientService.create(userData);
+        return ResponseEntity.status(201).body(userData);
     }
 
     @DeleteMapping("/{idClient}")

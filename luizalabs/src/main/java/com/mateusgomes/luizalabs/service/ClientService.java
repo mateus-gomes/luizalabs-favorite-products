@@ -1,9 +1,13 @@
 package com.mateusgomes.luizalabs.service;
 
+import com.mateusgomes.luizalabs.config.SecurityConfig;
+import com.mateusgomes.luizalabs.data.domain.UserData;
 import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.data.domain.Meta;
 import com.mateusgomes.luizalabs.data.domain.PageableClientList;
+import com.mateusgomes.luizalabs.data.model.User;
 import com.mateusgomes.luizalabs.repository.ClientRepository;
+import com.mateusgomes.luizalabs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +22,12 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SecurityConfig securityConfig;
 
     public PageableClientList findAll(int page) {
         final int PAGE_SIZE = 10;
@@ -38,8 +48,23 @@ public class ClientService {
         return clientRepository.existsByClientEmail(clientEmail);
     }
 
-    public void create(Client client) {
-        clientRepository.save(client);
+    public void create(UserData userData) {
+        User user = saveUser(userData);
+        clientRepository.save(new Client(
+                user.getIdUser(),
+                userData.getClientName(),
+                userData.getClientEmail()
+        ));
+    }
+
+    private User saveUser(UserData userData){
+        User user = new User(
+                userData.getClientEmail(),
+                userData.getClientName(),
+                securityConfig.passwordEncoder().encode(userData.getPassword())
+        );
+
+        return userRepository.save(user);
     }
 
     public boolean existsById(UUID idClient) {

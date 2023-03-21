@@ -28,6 +28,12 @@ public class Client {
         this.idClient = idClient;
     }
 
+    public Client(UUID idClient, String clientName, String clientEmail) {
+        this.idClient = idClient;
+        this.clientName = clientName;
+        this.clientEmail = clientEmail;
+    }
+
     public UUID getIdClient() {
         return idClient;
     }
