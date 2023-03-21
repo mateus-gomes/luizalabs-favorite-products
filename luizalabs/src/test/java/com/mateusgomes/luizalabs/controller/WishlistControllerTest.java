@@ -6,7 +6,6 @@ import com.mateusgomes.luizalabs.data.domain.PageableProductList;
 import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
 import com.mateusgomes.luizalabs.data.domain.ProductRequest;
 import com.mateusgomes.luizalabs.data.model.*;
-import com.mateusgomes.luizalabs.model.*;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
 import org.junit.jupiter.api.DisplayName;
