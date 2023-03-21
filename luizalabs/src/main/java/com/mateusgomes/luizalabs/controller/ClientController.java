@@ -109,7 +109,7 @@ public class ClientController {
                     ))}
             )
     })
-    public ResponseEntity createClient(@RequestBody UserData userData, BindingResult bindingResult){
+    public ResponseEntity createClient(@Valid @RequestBody UserData userData, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(422).body(errorHandler.buildValidationErrorMessage(bindingResult));
         }

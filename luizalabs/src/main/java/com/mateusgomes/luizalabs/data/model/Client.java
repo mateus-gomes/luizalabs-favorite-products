@@ -1,6 +1,7 @@
 package com.mateusgomes.luizalabs.data.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
@@ -13,10 +14,12 @@ public class Client {
     private UUID idClient;
 
     @NotNull(message = "Client name is a required field and should not be empty")
+    @NotBlank(message = "Client name must not be blank")
     @Column(name = "client_name", nullable = false)
     private String clientName;
 
     @NotNull(message = "Client email is a required field and should not be empty")
+    @NotBlank(message = "Client email must not be blank")
     @Column(name = "client_email", nullable = false)
     private String clientEmail;
 
