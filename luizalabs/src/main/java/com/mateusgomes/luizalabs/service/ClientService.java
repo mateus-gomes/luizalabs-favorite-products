@@ -80,6 +80,7 @@ public class ClientService {
     }
 
     public void update(Client client) {
+        userRepository.updateById(client.getClientEmail(), client.getIdClient());
         clientRepository.save(client);
     }
 

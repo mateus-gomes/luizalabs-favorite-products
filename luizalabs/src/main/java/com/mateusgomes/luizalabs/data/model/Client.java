@@ -10,7 +10,6 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idClient;
 
     @NotNull(message = "Client name is a required field and should not be empty")
