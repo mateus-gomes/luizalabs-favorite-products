@@ -26,4 +26,7 @@ public class Permission implements GrantedAuthority {
     public Permission(Long idPermission) {
         this.idPermission = idPermission;
     }
+
+    public Permission() {
+    }
 }

@@ -3,4 +3,17 @@ services:
   database:
     build: ./docker/database
     ports:
-     - "5432:5432"
+     - 5432:5432
+    expose:
+     - 5432:5432
+    networks:
+      - luizalabs-network
+  java:
+    build: ./docker/java
+    ports:
+     - 8080:8080
+    networks:
+      - luizalabs-network
+networks:
+  luizalabs-network:
+    driver: bridge
