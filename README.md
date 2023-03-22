@@ -17,7 +17,7 @@ Now the application is already up!
 If you want to explore informations about the API endpoints you can access the swagger by accessing http://localhost:8080/swagger-ui/index.html when the application is up.
 
 ## Endpoint collection
-If you want to test the endpoints through some API plataform, in the base path of the project there is a file named [collection.json](https://github.com/mateus-gomes/luizalabs-favorite-products/blob/main/collection.json), you can import it inside your API plataform and it will have all the application endpoints.
+If you want to test the endpoints through some API plataform, in the base path of the project there is a file named [collection.json](https://github.com/mateus-gomes/luizalabs-favorite-products/blob/main/collection), you can import it inside your API plataform and it will have all the application endpoints.
 
 ## Running the application through IDE
 If you want to run the application on the IDE make sure that the docker application is stopped and the environment variables are setted.
