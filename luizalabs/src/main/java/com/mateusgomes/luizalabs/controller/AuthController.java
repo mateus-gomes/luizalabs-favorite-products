@@ -20,7 +20,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @Operation(summary = "Authenticates an user and return a token")
+    @Operation(summary = "Authenticates an user and returns a token")
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AccountCredentials accountCredentials){
         if(accountCredentials.getUserName() == null || accountCredentials.getPassword() == null){
