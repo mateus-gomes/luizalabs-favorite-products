@@ -4,6 +4,7 @@ import com.mateusgomes.luizalabs.data.domain.UserData;
 import com.mateusgomes.luizalabs.handler.ErrorHandler;
 import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.data.domain.PageableClientList;
+import com.mateusgomes.luizalabs.service.AuthService;
 import com.mateusgomes.luizalabs.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +29,9 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private AuthService authService;
 
     private ErrorHandler errorHandler = new ErrorHandler();
 
@@ -75,11 +79,23 @@ public class ClientController {
                             mediaType = "application/json"
                     )}
             ),
+            @ApiResponse(responseCode = "401", description = "User tries to read information from other user",
+                    content = { @Content (
+                            schema = @Schema(defaultValue = "You are not authorized to complete this action.")
+                    )}
+            ),
             @ApiResponse(responseCode = "404", description = "No client was found with the specified id",
                     content = { @Content }
             ),
     })
-    public ResponseEntity<Optional<Client>> findClientById(@PathVariable UUID idClient){
+    public ResponseEntity findClientById(
+            @PathVariable UUID idClient,
+            @RequestHeader (name="Authorization") String token
+    ){
+        if(!authService.isUserAuthorized(idClient.toString(), token)){
+            return ResponseEntity.status(401).body("You are not authorized to complete this action.");
+        }
+
         Optional<Client> optionalClient = clientService.findById(idClient);
 
         if(optionalClient.isPresent()){
@@ -130,9 +146,21 @@ public class ClientController {
             ),
             @ApiResponse(responseCode = "400", description = "Client does not exists",
                     content = { @Content (schema = @Schema(defaultValue = "Client does not exists."))}
-            )
+            ),
+            @ApiResponse(responseCode = "401", description = "User tries to delete information from other user",
+                    content = { @Content (
+                            schema = @Schema(defaultValue = "You are not authorized to complete this action.")
+                    )}
+            ),
     })
-    public ResponseEntity<String> deleteClient(@PathVariable UUID idClient){
+    public ResponseEntity<String> deleteClient(
+            @PathVariable UUID idClient,
+            @RequestHeader (name="Authorization") String token
+    ){
+        if(!authService.isUserAuthorized(idClient.toString(), token)){
+            return ResponseEntity.status(401).body("You are not authorized to complete this action.");
+        }
+
         if(!clientService.existsById(idClient)){
             return ResponseEntity.status(400).body("Client does not exists.");
         }

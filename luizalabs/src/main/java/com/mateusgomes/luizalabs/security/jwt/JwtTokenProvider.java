@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class JwtTokenProvider {
@@ -41,10 +42,10 @@ public class JwtTokenProvider {
         algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
 
-    public Token createAccessToken(String username, List<String> roles) {
+    public Token createAccessToken(String username, List<String> roles, UUID idUser) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + validityInMilliseconds);
-        String accessToken = getAccessToken(username, roles, now, expirationDate);
+        String accessToken = getAccessToken(username, roles, now, expirationDate, idUser);
         String refreshToken = getRefreshToken(username, roles, now);
 
         return new Token(
@@ -66,11 +67,12 @@ public class JwtTokenProvider {
                 .trim();
     }
 
-    private String getAccessToken(String username, List<String> roles, Date now, Date expirationDate) {
+    private String getAccessToken(String username, List<String> roles, Date now, Date expirationDate, UUID idUser) {
         String issuerURL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         return JWT.create()
                 .withSubject(username)
                 .withClaim("roles", roles)
+                .withClaim("idUser", idUser.toString())
                 .withIssuedAt(now)
                 .withExpiresAt(expirationDate)
                 .withIssuer(issuerURL)
@@ -82,6 +84,11 @@ public class JwtTokenProvider {
         DecodedJWT decodedJWT = decodedToken(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(decodedJWT.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public String extractIdUserFromToken(String token){
+        token = token.substring("Bearer ".length());
+        return decodedToken(token).getClaim("idUser").asString();
     }
 
     private DecodedJWT decodedToken(String token) {

@@ -31,3 +31,5 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+version = '0.0.2'

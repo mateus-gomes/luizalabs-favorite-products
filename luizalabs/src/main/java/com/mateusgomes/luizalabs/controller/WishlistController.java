@@ -4,6 +4,7 @@ import com.mateusgomes.luizalabs.data.domain.PageableProductList;
 import com.mateusgomes.luizalabs.data.model.Product;
 import com.mateusgomes.luizalabs.data.domain.ProductAPIResponse;
 import com.mateusgomes.luizalabs.data.domain.ProductRequest;
+import com.mateusgomes.luizalabs.service.AuthService;
 import com.mateusgomes.luizalabs.service.ClientService;
 import com.mateusgomes.luizalabs.service.WishlistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,9 @@ public class WishlistController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private AuthService authService;
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<String> handleMissingParams(MissingServletRequestParameterException ex) {
         String name = ex.getParameterName();
@@ -53,14 +57,24 @@ public class WishlistController {
             @ApiResponse(responseCode = "400", description = "Client does not exists",
                     content = { @Content (schema = @Schema(defaultValue = "Client does not exists."))}
             ),
+            @ApiResponse(responseCode = "401", description = "User tries to read information from other user",
+                    content = { @Content (
+                            schema = @Schema(defaultValue = "You are not authorized to complete this action.")
+                    )}
+            ),
             @ApiResponse(responseCode = "404", description = "No clients were found",
                     content = { @Content }
             ),
     })
     public ResponseEntity findWishlistByClient(
             @PathVariable UUID idClient,
-            @RequestParam(value="page", required=true) int page
+            @RequestParam(value="page", required=true) int page,
+            @RequestHeader (name="Authorization") String token
     ){
+        if(!authService.isUserAuthorized(idClient.toString(), token)){
+            return ResponseEntity.status(401).body("You are not authorized to complete this action.");
+        }
+
         if(!clientService.existsById(idClient)){
             return ResponseEntity.status(400).body("Client does not exists.");
         }
@@ -95,10 +109,22 @@ public class WishlistController {
                     content = { @Content (schema = @Schema(
                             defaultValue = "Product with idProduct {idProduct} does not exists."
                     ))}
-            )
+            ),
+            @ApiResponse(responseCode = "401", description = "User tries to read information from other user",
+                    content = { @Content (
+                            schema = @Schema(defaultValue = "You are not authorized to complete this action.")
+                    )}
+            ),
     })
     @PostMapping("/{idClient}/wishlists")
-    public ResponseEntity addProductToWishlist(@PathVariable UUID idClient, @RequestBody ProductRequest productRequest){
+    public ResponseEntity addProductToWishlist(
+            @PathVariable UUID idClient,
+            @RequestBody ProductRequest productRequest,
+            @RequestHeader (name="Authorization") String token
+    ){
+        if(!authService.isUserAuthorized(idClient.toString(), token)){
+            return ResponseEntity.status(401).body("You are not authorized to complete this action.");
+        }
         UUID idProduct = productRequest.getIdProduct();
 
         if(!clientService.existsById(idClient)){

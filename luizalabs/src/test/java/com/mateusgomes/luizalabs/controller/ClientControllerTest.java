@@ -5,6 +5,7 @@ import com.mateusgomes.luizalabs.data.domain.UserData;
 import com.mateusgomes.luizalabs.data.model.Client;
 import com.mateusgomes.luizalabs.data.domain.Meta;
 import com.mateusgomes.luizalabs.data.domain.PageableClientList;
+import com.mateusgomes.luizalabs.service.AuthService;
 import com.mateusgomes.luizalabs.service.ClientService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,6 +39,9 @@ public class ClientControllerTest {
 
     @MockBean
     private ClientService clientService;
+
+    @MockBean
+    private AuthService authService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -92,22 +96,45 @@ public class ClientControllerTest {
     @DisplayName("GET /clients/{idClient} - find by id")
     class FindByIdMethods {
         @Test
-        @DisplayName("GET /clients/{idClient} - Should return 200 when is successful and there is a client registered")
+        @DisplayName("Should return 200 when is successful and there is a client registered")
         void findClientByIdOk() throws Exception {
+            String token = "BEARER_TOKEN";
             UUID uuid = UUID.randomUUID();
             Client client = new Client();
 
+            when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(true);
             when(clientService.findById(uuid)).thenReturn(Optional.of(client));
 
-            mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isOk());
+            mockMvc.perform(get("/clients/{idClient}", uuid)
+                    .header("Authorization", token))
+                    .andExpect(status().isOk());
         }
 
         @Test
-        @DisplayName("GET /clients/{idClient} - Should return 404 when is successful but there is no client registered")
+        @DisplayName("Should return 401 when user tries to read another user's information")
+        void findClientByIdUnauthorized() throws Exception {
+            String token = "BEARER_TOKEN";
+            UUID uuid = UUID.randomUUID();
+            Client client = new Client();
+
+            when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(false);
+
+            mockMvc.perform(get("/clients/{idClient}", uuid)
+                    .header("Authorization", token))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @Test
+        @DisplayName("Should return 404 when is successful but there is no client registered")
         void findClientByIdNoContent() throws Exception {
+            String token = "BEARER_TOKEN";
             UUID uuid = UUID.randomUUID();
 
-            mockMvc.perform(get("/clients/{idClient}", uuid)).andExpect(status().isNotFound());
+            when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(true);
+
+            mockMvc.perform(get("/clients/{idClient}", uuid)
+                    .header("Authorization", token))
+                    .andExpect(status().isNotFound());
         }
     }
 
@@ -164,11 +191,15 @@ public class ClientControllerTest {
         @Test
         @DisplayName("Should return 204 when client register is deleted")
         void deleteClientNoContent() throws Exception {
+            String token = "BEARER_TOKEN";
             UUID uuid = UUID.randomUUID();
 
+            when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(true);
             when(clientService.existsById(uuid)).thenReturn(true);
 
-            mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isNoContent());
+            mockMvc.perform(delete("/clients/{idClient}", uuid)
+                    .header("Authorization", token))
+                    .andExpect(status().isNoContent());
         }
 
         @Test
@@ -177,6 +208,20 @@ public class ClientControllerTest {
             UUID uuid = UUID.randomUUID();
 
             mockMvc.perform(delete("/clients/{idClient}", uuid)).andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @DisplayName("Should return 401 when user tries to delete another user's information")
+        void deleteClientUnauthorized() throws Exception {
+            String token = "BEARER_TOKEN";
+            UUID uuid = UUID.randomUUID();
+            Client client = new Client();
+
+            when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(false);
+
+            mockMvc.perform(delete("/clients/{idClient}", uuid)
+                    .header("Authorization", token))
+                    .andExpect(status().isUnauthorized());
         }
     }
 

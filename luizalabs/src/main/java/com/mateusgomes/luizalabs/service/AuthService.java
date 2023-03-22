@@ -38,7 +38,11 @@ public class AuthService {
             Optional<User> user = userRepository.findByUsername(username);
 
             if(user.isPresent()){
-                Token tokenResponse = tokenProvider.createAccessToken(username, user.get().getRoles());
+                Token tokenResponse = tokenProvider.createAccessToken(
+                        username,
+                        user.get().getRoles(),
+                        user.get().getIdUser()
+                );
                 return ResponseEntity.ok(tokenResponse);
             } else {
                 throw new UsernameNotFoundException("Username not found!");
@@ -46,5 +50,10 @@ public class AuthService {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password!");
         }
+    }
+
+    public boolean isUserAuthorized(String requestIdUser, String authorizationHeader){
+        String tokenIdUser = tokenProvider.extractIdUserFromToken(authorizationHeader);
+        return requestIdUser.equals(tokenIdUser);
     }
 }
