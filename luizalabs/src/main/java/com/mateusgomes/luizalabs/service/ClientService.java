@@ -76,6 +76,7 @@ public class ClientService {
     }
 
     public void delete(UUID idClient) {
+        userRepository.deleteById(idClient);
         clientRepository.deleteById(idClient);
     }
 
