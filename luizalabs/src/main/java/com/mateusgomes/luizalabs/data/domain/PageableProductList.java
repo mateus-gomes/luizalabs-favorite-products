@@ -1,6 +1,5 @@
 package com.mateusgomes.luizalabs.data.domain;
 
-import com.mateusgomes.luizalabs.data.domain.Meta;
 import com.mateusgomes.luizalabs.data.model.Product;
 
 import java.util.List;
