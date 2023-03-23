@@ -49,7 +49,7 @@ source .env
 docker compose up -d database
 ```
 
-3. Start the application. In the root folder of the repository access the _luizalabs_ folder. In the terminal:
+3. Start the application. On the root folder of the repository access the _luizalabs_ folder. In the terminal:
 ```
 cd luizalabs
 ```
@@ -69,7 +69,7 @@ If you can see the message bellow, it means the application is ready to use:
 - [Java 17+](https://www.java.com/pt-BR/download)
 
 ### Step by step
-1. Add the environment variables to your system. You can use the .env file. In your terminal:
+1. Add the environment variables to your system, you can use the .env file. In your terminal on the root page of the repository:
 ```
 source .env
 ```
@@ -77,7 +77,11 @@ source .env
 ```
 docker compose up -d database
 ```
-3. Run the gradle test task. In your terminal:
+3. Run the test task in gradle. On the root folder of the repository access the _luizalabs_ folder. In the terminal:
+```
+cd luizalabs
+```
+Inside this folder run the gradle test task. In terminal:
 ```
 gradle test
 ```
