@@ -13,19 +13,18 @@
 					"name": "Find All Clients",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZFVzZXIiOiI2Mzc1NmM5YS1iOWZjLTQxODItYTFiNC05MmM1NDY0NDVmMWIiLCJzdWIiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJDTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZXhwIjoxNjc5NTA2MjI0LCJpYXQiOjE2Nzk1MDI2MjR9.cY7Y7-NOWlhX6fSDxnXbOHIEeA5a9gKqko2qCzsSm0o",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/clients?page=0",
+							"raw": "http://localhost:8080/clients?page=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -37,7 +36,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "1"
 								}
 							]
 						}
@@ -48,19 +47,18 @@
 					"name": "Find Client by id",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZFVzZXIiOiI2Mzc1NmM5YS1iOWZjLTQxODItYTFiNC05MmM1NDY0NDVmMWIiLCJzdWIiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJDTElFTlQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZXhwIjoxNjc5NTIxNzM0LCJpYXQiOjE2Nzk1MTgxMzR9.IJDAXmXqntkSAoTXqa0WxTePj3j2MWMADotDNl4nzcA",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/clients/63756c9a-b9fc-4182-a1b4-92c546445f1b",
+							"raw": "http://localhost:8080/clients/9459ff30-d93f-4cbe-9476-e3c1b318dcbd",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -68,7 +66,7 @@
 							"port": "8080",
 							"path": [
 								"clients",
-								"63756c9a-b9fc-4182-a1b4-92c546445f1b"
+								"9459ff30-d93f-4cbe-9476-e3c1b318dcbd"
 							]
 						}
 					},
@@ -81,7 +79,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientName\": \"teste\",\r\n    \"clientEmail\": \"teste@email.com\",\r\n    \"password\": \"teste\"\r\n}",
+							"raw": "{\r\n    \"clientName\": \"admin\",\r\n    \"clientEmail\": \"admin@email.com\",\r\n    \"password\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -144,19 +142,18 @@
 					"name": "Find Client by id Copy",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlcyI6W10sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImV4cCI6MTY3OTQzMDA3OSwiaWF0IjoxNjc5NDI2NDc5fQ.2sTr2lPLjOitODOusutAt5ChTyjmxueSmpDWbPUYdQA",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/clients/92e875d7-2627-40d2-93b2-147a27c9280a",
+							"raw": "http://localhost:8080/clients/f14193bb-3565-445a-829d-b415343e5999",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -164,7 +161,7 @@
 							"port": "8080",
 							"path": [
 								"clients",
-								"92e875d7-2627-40d2-93b2-147a27c9280a"
+								"f14193bb-3565-445a-829d-b415343e5999"
 							]
 						}
 					},
@@ -179,19 +176,18 @@
 					"name": "Find Wishlist by client",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlcyI6W10sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImV4cCI6MTY3OTQzMDA3OSwiaWF0IjoxNjc5NDI2NDc5fQ.2sTr2lPLjOitODOusutAt5ChTyjmxueSmpDWbPUYdQA",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/clients/83df955d-7c7e-404d-bbce-8b5d0f1c5c82/wishlists?page=0",
+							"raw": "http://localhost:8080/clients/f14193bb-3565-445a-829d-b415343e5999/wishlists?page=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -199,13 +195,13 @@
 							"port": "8080",
 							"path": [
 								"clients",
-								"83df955d-7c7e-404d-bbce-8b5d0f1c5c82",
+								"f14193bb-3565-445a-829d-b415343e5999",
 								"wishlists"
 							],
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "1"
 								}
 							]
 						}
@@ -216,17 +212,16 @@
 					"name": "Add product to wishlist by client",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlcyI6W10sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImV4cCI6MTY3OTQzMDA3OSwiaWF0IjoxNjc5NDI2NDc5fQ.2sTr2lPLjOitODOusutAt5ChTyjmxueSmpDWbPUYdQA",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"idProduct\": \"1bf0f365-fbdd-4e21-9786-da459d78dd1f\"\r\n}",
@@ -237,7 +232,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/clients/83df955d-7c7e-404d-bbce-8b5d0f1c5c82/wishlists",
+							"raw": "http://localhost:8080/clients/f14193bb-3565-445a-829d-b415343e5999/wishlists",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -245,7 +240,7 @@
 							"port": "8080",
 							"path": [
 								"clients",
-								"83df955d-7c7e-404d-bbce-8b5d0f1c5c82",
+								"f14193bb-3565-445a-829d-b415343e5999",
 								"wishlists"
 							]
 						}
@@ -284,12 +279,27 @@
 		},
 		{
 			"name": "Autenticação",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(responseCode.code >= 200 && responseCode.code <= 299) {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"    postman.setEnvironmentVariable(\"token\", jsonData.accessToken);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"teste@email.com\",\r\n    \"password\" : \"teste\"\r\n}",
+					"raw": "{\r\n    \"userName\": \"admin@email.com\",\r\n    \"password\" : \"admin\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

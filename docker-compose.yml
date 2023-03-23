@@ -9,6 +9,7 @@ services:
     networks:
       - luizalabs-network
   java:
+    platform: linux/amd64
     build: ./docker/java
     ports:
      - 8080:8080
