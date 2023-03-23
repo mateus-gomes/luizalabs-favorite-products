@@ -5,12 +5,14 @@ import com.mateusgomes.luizalabs.exception.InvalidGivenIdException;
 import com.mateusgomes.luizalabs.exception.InvalidJwtAuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -38,6 +40,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         ExceptionResponse exceptionResponse = buildExceptionResponse(exception, request);
 
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ExceptionResponse> handleBadCredentialsExceptions(
+            Exception exception, WebRequest request
+    ){
+        ExceptionResponse exceptionResponse = buildExceptionResponse(exception, request);
+
+        return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     private ExceptionResponse buildExceptionResponse(Exception exception, WebRequest request){
