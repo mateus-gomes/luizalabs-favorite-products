@@ -34,7 +34,7 @@ public class ClientService {
 
     public PageableClientList findAll(int page) {
         final int PAGE_SIZE = 10;
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page-1, PAGE_SIZE);
         Page<Client> pageClient = clientRepository.findAll(pageable);
 
         return new PageableClientList(

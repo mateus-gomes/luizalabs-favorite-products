@@ -68,7 +68,7 @@ public class WishlistControllerTest {
         @DisplayName("Should return 200 when the client exists but there are no products on the wishlist")
         void findWishlistByClientOk() throws Exception {
             String token = "BEARER_TOKEN";
-            int pageNumber = 0;
+            int pageNumber = 1;
             UUID uuid = UUID.randomUUID();
 
             when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(true);
@@ -86,7 +86,7 @@ public class WishlistControllerTest {
         @DisplayName("Should return 404 when the client exists but there are no products on the wishlist")
         void findWishlistByClientNoContent() throws Exception {
             String token = "BEARER_TOKEN";
-            int pageNumber = 0;
+            int pageNumber = 1;
             UUID uuid = UUID.randomUUID();
 
             when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(true);
@@ -95,7 +95,7 @@ public class WishlistControllerTest {
                     new PageableProductList(new Meta(pageNumber, 10), new ArrayList<>())
             );
 
-            mockMvc.perform(get("/clients/{idClient}/wishlists?page=0", uuid)
+            mockMvc.perform(get(String.format("/clients/{idClient}/wishlists?page=%d", pageNumber), uuid)
                     .header("Authorization", token))
                     .andExpect(status().isNotFound());
         }
@@ -109,7 +109,7 @@ public class WishlistControllerTest {
 
             when(authService.isUserAuthorized(uuid.toString(), token)).thenReturn(false);
 
-            mockMvc.perform(get("/clients/{idClient}/wishlists?page=0", uuid)
+            mockMvc.perform(get("/clients/{idClient}/wishlists?page=1", uuid)
                     .header("Authorization", token))
                     .andExpect(status().isUnauthorized());
         }

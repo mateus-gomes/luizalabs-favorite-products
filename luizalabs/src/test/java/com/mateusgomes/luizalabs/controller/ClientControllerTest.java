@@ -52,7 +52,7 @@ public class ClientControllerTest {
         @Test
         @DisplayName("Should return 200 when is successful and there are clients registered")
         void findAllClientsOk() throws Exception {
-            int pageNumber = 0;
+            int pageNumber = 1;
             Client client = new Client();
 
             when(clientService.findAll(pageNumber)).thenReturn(
@@ -74,7 +74,7 @@ public class ClientControllerTest {
         @DisplayName("Should return 403 when user is not authenticated")
         @WithAnonymousUser
         void findAllClientsForbidden() throws Exception {
-            int pageNumber = 0;
+            int pageNumber = 1;
 
             mockMvc.perform(get(String.format("/clients?page=%d", pageNumber))).andExpect(status().isForbidden());
         }
@@ -82,13 +82,13 @@ public class ClientControllerTest {
         @Test
         @DisplayName("Should return 404 when is successful but there are no clients registered")
         void findAllClientsNoContent() throws Exception {
-            int pageNumber = 0;
+            int pageNumber = 1;
 
             when(clientService.findAll(pageNumber)).thenReturn(
                     new PageableClientList(new Meta(pageNumber, 10), new ArrayList<>())
             );
 
-            mockMvc.perform(get("/clients?page=0")).andExpect(status().isNotFound());
+            mockMvc.perform(get(String.format("/clients?page=%d", pageNumber))).andExpect(status().isNotFound());
         }
     }
 

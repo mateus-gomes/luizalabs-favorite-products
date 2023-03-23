@@ -26,7 +26,7 @@ public class WishlistService {
 
     public PageableProductList findByClientId(UUID idClient, int page) {
         final int PAGE_SIZE = 5;
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page-1, PAGE_SIZE);
         Page<Product> pageProduct = productRepository.findByClientIdClient(idClient, pageable);
 
         return new PageableProductList(
